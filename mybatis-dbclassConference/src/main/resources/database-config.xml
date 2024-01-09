@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<typeAliases>
+	<!--Type Aliases added:-->
+  <typeAlias alias="Participator" type="com.domain.Participator"/>
+  <typeAlias alias="Paper" type="com.domain.Paper"/>
+  <typeAlias alias="Author" type="com.domain.Author"/>
+</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@dataserv.mscsnet.mu.edu:1521:orcl" />
+				<property name="username" value="fitzgerald" />
+				<property name="password" value="006232038"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/mapper/ConferenceMapper.xml" />
+	</mappers>
+</configuration>

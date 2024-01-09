@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.ConferenceMapper">
+	<!-- I found that the mapper needs exactly one resultMap. If you want to have more,
+	you have to add it as a Type Alias in database-config. I'm not entirely sure why
+	that is the case, but it was the only thing that worked.-->
+	<resultMap id="ParticipatorResult" type="Participator">
+		<id property="email" column="email" />
+		<result property="fname" column="fname" />
+		<result property="lname" column="lname" />
+		<result property="minit" column="minit" />
+		<result property="phone" column="phone" />
+		<result property="affiliation" column="affiliation" />
+	</resultMap>
+	
+	<select id="selectAll" resultMap="ParticipatorResult">
+		SELECT * FROM participator
+	</select>
+
+	<!--Even though only two of these columns are needed in the code, it needs to attach
+		it to a Paper object, so the fields had to match. -->
+		
+	<select id = "selectGoodPapers" resultType = "Paper">
+		select p.paperid, p.title, p.filename, p.contactauthoremail, p.abstract
+		from reviews r, paper p
+		where r.paperid = p.paperid
+		group by r.paperid, p.paperid, p.title, p.filename, p.contactauthoremail, p.abstract
+		having avg(r.overallrecomm)> 7
+		order by r.paperid asc
+	</select>
+	<!--The inserts were the least problematic. I had very little difficulties since 
+		it is pretty straight-forward.-->
+	<insert id="insertParticipator" parameterType="com.domain.Participator">
+		INSERT INTO participator(email, firstname, minit, lastname, phone, affiliation) VALUES (#{email},#{fname},#{minit},#{lname},#{phone},#{affiliation})
+	</insert>
+	<select id="selectAllAuthors" resultType="Author">
+		SELECT  a.email, p.firstname, p.lastname
+		FROM author a, participator p
+		where a.email = p.email
+	</select>
+
+	<insert id="insertAuthor" parameterType="com.domain.Author">
+		INSERT INTO author(email) VALUES (#{email})
+	</insert>
+	
+	
+	
+		
+
+</mapper>
